@@ -4,38 +4,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assignment1
+namespace Assignment2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Employee o1 = new Employee("Amol", 123465, 10);
-            Console.WriteLine(o1.EmpNo);
-            Employee o2 = new Employee("Amol", 123465);
-            Console.WriteLine(o2.EmpNo);
-            Employee o3 = new Employee("Amol");
-            Console.WriteLine(o3.EmpNo);
-            Employee o4 = new Employee();
-            Console.WriteLine(o4.EmpNo);
-            Console.ReadLine();
+            GeneralManager g = new GeneralManager("value", "cleark", "abhi", 30000, 1);
+            Console.WriteLine(g.CalNetSalary());
+            Employee e = new CEO("dinesh", 32000.5m, 2);
+            Console.WriteLine(e.CalNetSalary());
         }
     }
-    class Employee
+    public abstract class Employee
     {
-        //private int empno;
         private string name;
+        private int empno;
+        private short deptno;
+        public decimal basic;
+        private static int auto;
+
         public string Name
         {
             set
             {
-                if(value!=null)
+                if(value !=null)
                 {
                     name = value;
                 }
                 else
                 {
-                    Console.WriteLine("Name should not be null");
+                    Console.WriteLine("Name Can not be null");
                 }
             }
             get
@@ -43,7 +42,6 @@ namespace Assignment1
                 return name;
             }
         }
-        private static int empno;
         public int EmpNo
         {
             get
@@ -51,39 +49,17 @@ namespace Assignment1
                 return empno;
             }
         }
-
-        private decimal basic;
-        public decimal Basic
-        {
-            set
-            {
-                if (value > 10000 && value < 20000)
-                {
-                    basic = value;
-                }
-                else
-                {
-                    Console.WriteLine("Basic should be between 100000 to 200000");
-                }
-            }
-            get
-            {
-                return basic;
-            }
-        }
-
-        private short deptno;
         public short DeptNo
         {
             set
             {
-                if(value > 0)
+                if(value >0)
                 {
                     deptno = value;
                 }
                 else
                 {
-                    Console.WriteLine("DeptNo should be greater than 0");
+                    Console.WriteLine("Dept No must be greater than 0");
                 }
             }
             get
@@ -91,45 +67,96 @@ namespace Assignment1
                 return deptno;
             }
         }
-        public Employee(string name,decimal basic, short deptno)
+        public abstract decimal Basic { set; get; }
+        public abstract decimal CalNetSalary();
+        public Employee(string name,decimal basic,short deptno)
         {
-            this.name = name;
-            this.basic = basic;
-            this.deptno = deptno;
-            empno=empno+1;
+            this.Name = name;
+            this.Basic = basic;
+            this.DeptNo = deptno;
+            auto++;
+            this.empno = auto;
+        }
+    }
+    public class Manager : Employee
+    {
+        private string designation;
+        public override decimal Basic
+        {
+            set
+            {
+                basic = value;
+            }
+            get
+            {
+                return basic;
+            }
+        }
+        public string Designation
+        {
+            set
+            {
+                if (value != null)
+                {
+                    designation = value;
+                }
+                else
+                    Console.WriteLine("Designation Cant Be null");
+            }
+            get
+            {
+                return designation;
+            }
+        }
+
+        public override decimal CalNetSalary()
+        {
+            return basic + 2000 + 2000;
 
         }
 
-       public Employee(string name, decimal basic)
+        
+
+        public Manager(string designation, string name, decimal basic, short deptno) : base(name, basic, deptno)
         {
-            this.name = name;
-            this.basic = basic;
-            deptno = 10;
-            empno = empno + 1;
+            this.Designation = designation;
+        }
+
+
+    }
+    public class GeneralManager : Manager
+    {
+        public string Perks { set; get; }
+        public GeneralManager(string perks, string designation, string name, decimal basic, short deptno) : base(designation, name, basic, deptno)
+        {
+            this.Perks = perks;
+        }
+    }
+    public class CEO : Employee
+    {
+        public override decimal Basic
+        {
+            get
+            {
+                return basic;
+            }
+            set
+            {
+                basic = value;
+            }
+        }
+
+        public override decimal CalNetSalary()
+        {
+            return Basic + 5000 + 10000 + 9000;
 
         }
 
-       public Employee(string name)
+        
+
+        public CEO(string name, decimal basic, short deptno) : base(name, basic, deptno)
         {
-            this.name = name;
-            basic = 110000;
-            deptno = 10;
-            empno = empno + 1;
 
-        }
-
-       public Employee()
-        {
-            name = "Amol";
-            basic = 110000;
-            deptno = 10;
-            empno = empno + 1;
-
-        }
-
-        public decimal GetNetSalary()
-        {
-            return basic + 5000;
         }
     }
 }
