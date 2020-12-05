@@ -4,159 +4,123 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assignment2
+namespace Assignment4Collection_a
 {
     class Program
     {
         static void Main(string[] args)
         {
-            GeneralManager g = new GeneralManager("value", "cleark", "abhi", 30000, 1);
-            Console.WriteLine(g.CalNetSalary());
-            Employee e = new CEO("dinesh", 32000.5m, 2);
-            Console.WriteLine(e.CalNetSalary());
+            SortedList<int, Employee> objDict = new SortedList<int, Employee>();
+
+            string flag = "YES";
+            String Name;
+            decimal Salary;
+            int Empno;
+            decimal sal=1;
+            int i = 0;
+            int j = 1;
+            int emp;
+            int n;
+
+            while(flag=="YES")
+            {
+                i++;
+                Console.WriteLine("Enter Employee Info");
+                Console.WriteLine("Enter employee name");
+                Name = Console.ReadLine();
+                Console.WriteLine("Enter employee salary");
+                Salary = Convert.ToDecimal(Console.ReadLine());
+                Console.WriteLine("Enter employee no");
+                Empno = Convert.ToInt32(Console.ReadLine());
+                
+                objDict.Add(i,new Employee { name=Name,salary=Salary,empno=Empno});
+                Console.WriteLine("you want to add another Employee info(YES/NO)");
+                flag = Console.ReadLine();
+                
+            }
+
+            foreach(KeyValuePair<int,Employee> kvp in objDict)
+            {
+                if(sal<kvp.Value.salary)
+                {
+                    sal = kvp.Value.salary;
+
+                }
+            }
+            Console.WriteLine("Highest salary is={0}",sal);
+
+
+            foreach(KeyValuePair<int,Employee> kvp in objDict)
+            {
+                Console.WriteLine(kvp.Key);
+                Console.WriteLine("name :{0}, Salary:{1},EmpNo:{2}",kvp.Value.name,kvp.Value.salary,kvp.Value.empno);
+            }
+
+            Console.WriteLine("Enter employee Number :");
+            emp =Convert.ToInt32( Console.ReadLine());
+            foreach (KeyValuePair<int, Employee> obj in objDict)
+            {
+                if (obj.Value.EmpNo == emp)
+                {
+                    Console.WriteLine("name={0},salary={1}", obj.Value.Name, obj.Value.Salary);
+                }
+
+            }
+
+            Console.WriteLine("enter how many employee u want to show");
+            n =Convert.ToInt32( Console.ReadLine());
+            foreach (KeyValuePair<int, Employee> obj in objDict)
+            {
+                if (j<=n)
+                {
+                    Console.WriteLine("name={0},salary={1},empno={2}", obj.Value.Name, obj.Value.Salary,obj.Value.EmpNo);
+                    j++;
+                }
+
+            }
+
+            Console.ReadLine();
         }
     }
-    public abstract class Employee
+    class Employee
     {
-        private string name;
-        private int empno;
-        private short deptno;
-        public decimal basic;
-        private static int auto;
+        public String name;
+        public decimal salary;
+        public int empno;
 
         public string Name
         {
             set
             {
-                if(value !=null)
-                {
-                    name = value;
-                }
-                else
-                {
-                    Console.WriteLine("Name Can not be null");
-                }
+                name = value;
             }
             get
             {
                 return name;
             }
         }
+
+        public decimal Salary
+        {
+            set
+            {
+                salary = value;
+            }
+            get
+            {
+                return salary;
+            }
+        }
         public int EmpNo
         {
+            set
+            {
+                empno = value;
+            }
             get
             {
                 return empno;
             }
-        }
-        public short DeptNo
-        {
-            set
-            {
-                if(value >0)
-                {
-                    deptno = value;
-                }
-                else
-                {
-                    Console.WriteLine("Dept No must be greater than 0");
-                }
-            }
-            get
-            {
-                return deptno;
-            }
-        }
-        public abstract decimal Basic { set; get; }
-        public abstract decimal CalNetSalary();
-        public Employee(string name,decimal basic,short deptno)
-        {
-            this.Name = name;
-            this.Basic = basic;
-            this.DeptNo = deptno;
-            auto++;
-            this.empno = auto;
-        }
-    }
-    public class Manager : Employee
-    {
-        private string designation;
-        public override decimal Basic
-        {
-            set
-            {
-                basic = value;
-            }
-            get
-            {
-                return basic;
-            }
-        }
-        public string Designation
-        {
-            set
-            {
-                if (value != null)
-                {
-                    designation = value;
-                }
-                else
-                    Console.WriteLine("Designation Cant Be null");
-            }
-            get
-            {
-                return designation;
-            }
-        }
-
-        public override decimal CalNetSalary()
-        {
-            return basic + 2000 + 2000;
-
-        }
-
-        
-
-        public Manager(string designation, string name, decimal basic, short deptno) : base(name, basic, deptno)
-        {
-            this.Designation = designation;
-        }
-
-
-    }
-    public class GeneralManager : Manager
-    {
-        public string Perks { set; get; }
-        public GeneralManager(string perks, string designation, string name, decimal basic, short deptno) : base(designation, name, basic, deptno)
-        {
-            this.Perks = perks;
-        }
-    }
-    public class CEO : Employee
-    {
-        public override decimal Basic
-        {
-            get
-            {
-                return basic;
-            }
-            set
-            {
-                basic = value;
-            }
-        }
-
-        public override decimal CalNetSalary()
-        {
-            return Basic + 5000 + 10000 + 9000;
-
-        }
-
-        
-
-        public CEO(string name, decimal basic, short deptno) : base(name, basic, deptno)
-        {
-
         }
     }
 }
